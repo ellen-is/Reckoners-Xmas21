@@ -48,7 +48,6 @@ ixH = contactsperson$Home==1
 ixT = contactsperson$Travel==1
 ixW = contactsperson$Work==1
 ixShops = contactsperson$Other==1
-numreps=1
 cc=0; 
 x=1
 
@@ -68,7 +67,7 @@ outdf = data.frame(scenario=rep(1:numscenarios,each=NR*numreps),simnum=rep(1:num
                    Reffrisk=0,InfectionsRisk=0,Casesrisk=0,Deathsrisk=0)
 
 
-numreps=2
+numreps=100
 
 i=1
 
@@ -77,6 +76,7 @@ for(SC in 1:numscenarios)
   mortality = severity[SC]*mortality2
   for(r1 in 1:numreps)
   {
+    cat(paste(r1,"..",sep=""))
     input = input2
     input[susix]=input2[susix]^escape[SC]
     input[infix]=input2[infix]^escape[SC]
@@ -176,23 +176,45 @@ nbins=80
 
 Rpanel = function(outdf,plotscenario)
 {
-  outdf %>%
-    select(scenario,Reff,Reffrisk) %>%
-    filter(scenario%in%c(plotscenario)) %>%
-    pivot_longer(-scenario) %>%
-    ggplot(aes(x=value,fill=name))+
-    geom_density(alpha=0.5)+
-    geom_histogram(aes(y=..density..),bins=nbins,alpha=0.3)+
+  if(plotscenario==1)
+  {
+    outdf %>%
+      select(scenario,Reff,Reffrisk) %>%
+      filter(scenario%in%c(plotscenario)) %>%
+      pivot_longer(-scenario) %>%
+      ggplot(aes(x=value,fill=name))+
+      geom_density(alpha=0.5)+
+      geom_histogram(aes(y=..density..),bins=nbins,alpha=0.3)+
     #facet_grid(scenario~.,scales = 'free_y')+
-    xlab('R Effective')+
-    theme_cowplot()+
-    scale_fill_discrete_qualitative(palette='Set 2',labels = c("Baseline","Reported risk reduction"))+
+      xlab('R Effective')+
+      theme_cowplot()+
+      scale_fill_discrete_qualitative(palette='Set 2',labels = c("Baseline","Reported risk reduction"))+
     #  scale_x_continuous(labels = function(x){return(paste0("10^", x))}) +
-    theme(
-      axis.text.x = element_markdown(),
-      legend.title = element_blank(),
-      legend.position=c(0.2,0.8)
-    ) -> p
+      theme(
+        axis.text.x = element_markdown(),
+        legend.title = element_blank(),
+        legend.position=c(0.2,0.8)
+      ) -> p
+  }
+  else{
+    outdf %>%
+      select(scenario,Reff,Reffrisk) %>%
+      filter(scenario%in%c(plotscenario)) %>%
+      pivot_longer(-scenario) %>%
+      ggplot(aes(x=value,fill=name))+
+      geom_density(alpha=0.5)+
+      geom_histogram(aes(y=..density..),bins=nbins,alpha=0.3)+
+      #facet_grid(scenario~.,scales = 'free_y')+
+      xlab('R Effective')+
+      theme_cowplot()+
+      scale_fill_discrete_qualitative(palette='Set 2',labels = c("Baseline","Reported risk reduction"))+
+      #  scale_x_continuous(labels = function(x){return(paste0("10^", x))}) +
+      theme(
+        axis.text.x = element_markdown(),
+        legend.title = element_blank(),
+        legend.position=''
+      ) -> p
+  }
   
 }
 hosppanel = function(outdf,plotscenario)
@@ -257,10 +279,10 @@ pd=Rpanel(outdf,4)
 pd2=Deathspanel(outdf,4,mylabel="Low severity, high VE")
 pd3=hosppanel(outdf,4)
 
-print((p+p3+p2)/(pb+pb3+pb2)/(pc+pc3+pc2)/(pd+pd3+pd2))+plot_annotation(tag_levels = 'A')->pall
+print((p1+p3+p2)/(pb+pb3+pb2)/(pc+pc3+pc2)/(pd+pd3+pd2))+plot_annotation(tag_levels = 'A')->pall
 pall
 
 GoldenRatio=(1+sqrt(5))/2
 
-ggsave(pall,width = 8*GoldenRatio,height = 8,filename = paste('figs/','ALSPAC_FIGURE_4PANELS','.png',sep="")) 
+ggsave(pall,width = 8*GoldenRatio,height = 8,filename = paste('figs/','ALSPAC_FIGURE_4PANELS_2','.png',sep="")) 
  
