@@ -32,9 +32,9 @@ input = data.frame(seroprev=0.3,infchild=0.25,covidsec=0.2,CTF1=0.2,
                    ve_deathredmod1=0.85,ve_deathredmod2=0.97,
                    ve_deathrednat=0.97,ve_deathredvacnat=0.995,
                    ve_deathredboost=0.98,
-                   transmissionadvantage=3,SAR=0.03,SARhome=0.103,
+                   transmissionadvantage=4,SAR=0.03,SARhome=0.103,
                    SARlo=0.028,SARhomelo=0.101,SARhi=0.032,SARhomehi=0.105,
-                   maxY=4)
+                   maxY=4,LFTsensitivity=0.5,escape_severity=2)
 
 
 input2 = data.frame(seroprev=0.3,infchild=0.25,covidsec=0.2,CTF1=0.2,
@@ -51,9 +51,9 @@ input2 = data.frame(seroprev=0.3,infchild=0.25,covidsec=0.2,CTF1=0.2,
                     ve_deathredmod1=0.85,ve_deathredmod2=0.97,
                     ve_deathrednat=0.97,ve_deathredvacnat=0.995,
                     ve_deathredboost=0.98,
-                    transmissionadvantage=3,SAR=0.03,SARhome=0.103,
+                    transmissionadvantage=4,SAR=0.03,SARhome=0.103,
                     SARlo=0.028,SARhomelo=0.101,SARhi=0.032,SARhomehi=0.105,
-                    maxY=4)
+                    maxY=4,LFTsensitivity=0.5,escape_severity=2)
 susix = seq(5,26,2) #indices related to susceptibility
 infix = seq(6,26,2) #indices related to infectiousness
 deathix = c(27:37) #indices related to mortality rates
